@@ -1,0 +1,38 @@
+version: latest
+
+executors:
+  python-executor:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/repo
+
+jobs:
+  install-dependencies:
+    executor: python-executor
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+
+  test:
+    executor: python-executor
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+      - run:
+          name: Run tests
+          command: pytest
+
+workflows:
+  version: 2
+  testing_python :
+      jobs:
+        - install-dependencies
+        - test
